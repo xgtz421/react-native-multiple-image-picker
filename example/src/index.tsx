@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import {
+  ActionSheetIOS,
+  Alert,
   Appearance,
   ColorSchemeName,
   Image,
@@ -76,7 +78,42 @@ export default function App() {
   }
 
   const onPressImage = (_: PickerResult, index: number) => {
-    openPreview(images, index, {})
+    openPreview(images, index, {
+      onLongPress: () => {
+        if (Platform.OS === 'ios') {
+          ActionSheetIOS.showActionSheetWithOptions(
+            {
+              options: ['Download', 'Cancel'],
+              cancelButtonIndex: 1,
+              userInterfaceStyle: colorScheme ?? 'light',
+            },
+            (buttonIndex) => {
+              if (buttonIndex === 0) {
+                // Download
+              } else if (buttonIndex === 1) {
+                // Cancel
+              }
+            }
+          )
+        } else {
+          Alert.alert('Options', '', [
+            {
+              text: 'Cancel',
+              style: 'cancel',
+              onPress: () => {
+                console.log('Cancel')
+              },
+            },
+            {
+              text: 'Download',
+              onPress: () => {
+                console.log('Download')
+              },
+            },
+          ])
+        }
+      },
+    })
   }
 
   const onPicker = async () => {

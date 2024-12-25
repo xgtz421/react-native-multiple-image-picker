@@ -114,7 +114,8 @@ export function openPreview(
   return Picker.openPreview(
     media as MediaPreview[],
     index,
-    config as NitroPreviewConfig
+    config as NitroPreviewConfig,
+    config?.onLongPress ?? (() => {})
   )
 }
 

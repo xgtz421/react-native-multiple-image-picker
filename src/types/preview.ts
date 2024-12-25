@@ -36,6 +36,8 @@ export interface PreviewConfig
    * - 'ar': 🇸🇦 Arabic
    */
   language?: Language
+
+  onLongPress?: (index: number) => void
 }
 
 export interface MediaPreview {

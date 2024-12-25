@@ -29,9 +29,10 @@ class MultipleImagePicker : HybridMultipleImagePickerSpec() {
     override fun openPreview(
         media: Array<MediaPreview>,
         index: Double,
-        config: NitroPreviewConfig
+        config: NitroPreviewConfig,
+        onLongPress: (index: Double) -> Unit
     ) {
-        pickerModule.openPreview(media, index.toInt(), config)
+        pickerModule.openPreview(media, index.toInt(), config, onLongPress)
     }
 
     override fun openCamera(
