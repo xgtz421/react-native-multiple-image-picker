@@ -8,7 +8,7 @@
 import HXPhotoPicker
 
 extension HybridMultipleImagePicker {
-    func openPreview(media: [MediaPreview], index: Double, config: NitroPreviewConfig) throws {
+    func openPreview(media: [MediaPreview], index: Double, config: NitroPreviewConfig, onLongPress: @escaping ((Double) -> Void)) throws {
         var previewConfig = HXPhotoPicker.PhotoBrowser.Configuration()
         previewConfig.showDelete = false
 
@@ -68,8 +68,7 @@ extension HybridMultipleImagePicker {
                 pageIndex: Int(index),
                 config: previewConfig,
                 longPressHandler: { index, _, _ in
-                    print("index ne: ", index)
-                    config.onLongPress?(Double(index))
+                    onLongPress(Double(index))
                 }
             )
         }
