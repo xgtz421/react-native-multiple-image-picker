@@ -65,7 +65,14 @@ abstract class HybridMultipleImagePickerSpec: HybridObject() {
   
   @DoNotStrip
   @Keep
-  abstract fun openPreview(media: Array<MediaPreview>, index: Double, config: NitroPreviewConfig): Unit
+  abstract fun openPreview(media: Array<MediaPreview>, index: Double, config: NitroPreviewConfig, onLongPress: (index: Double) -> Unit): Unit
+  
+  @DoNotStrip
+  @Keep
+  private fun openPreview(media: Array<MediaPreview>, index: Double, config: NitroPreviewConfig, onLongPress: Func_void_double): Unit {
+    val __result = openPreview(media, index, config, onLongPress.toLambda())
+    return __result
+  }
   
   @DoNotStrip
   @Keep

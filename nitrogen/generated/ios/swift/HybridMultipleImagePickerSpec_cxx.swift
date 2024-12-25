@@ -149,9 +149,14 @@ public class HybridMultipleImagePickerSpec_cxx {
   }
   
   @inline(__always)
-  public func openPreview(media: bridge.std__vector_MediaPreview_, index: Double, config: NitroPreviewConfig) -> bridge.Result_void_ {
+  public func openPreview(media: bridge.std__vector_MediaPreview_, index: Double, config: NitroPreviewConfig, onLongPress: bridge.Func_void_double) -> bridge.Result_void_ {
     do {
-      try self.__implementation.openPreview(media: media.map({ __item in __item }), index: index, config: config)
+      try self.__implementation.openPreview(media: media.map({ __item in __item }), index: index, config: config, onLongPress: { () -> ((Double) -> Void) in
+        let __wrappedFunction = bridge.wrap_Func_void_double(onLongPress)
+        return { (__index: Double) -> Void in
+          __wrappedFunction.call(__index)
+        }
+      }())
       return bridge.create_Result_void_()
     } catch (let __error) {
       let __exceptionPtr = __error.toCpp()

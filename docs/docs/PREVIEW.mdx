@@ -22,9 +22,12 @@ Preview is a simple image viewer that supports both local and remote media. It a
 ## Usage
 
 ```typescript
-import { openPreview } from '@baronha/react-native-multiple-image-picker'
+import {
+  openPreview,
+  PreviewConfig,
+} from '@baronha/react-native-multiple-image-picker'
 
-const cropConfig: CropConfig = {
+const previewConfig: PreviewConfig = {
   language: 'system',
 }
 
@@ -49,7 +52,7 @@ const media: MediaPreview[] = [
 ]
 
 // call to preview
-openPreview(media, 2, cropConfig)
+openPreview(media, 2, previewConfig)
 ```
 
 ## `MediaPreview[]`
@@ -65,11 +68,23 @@ openPreview(media, 2, cropConfig)
 
 ## `index`
 
+default: `0`
+
 The `index` parameter in the `openPreview` function specifies the initial media item to display. It is a zero-based index, meaning that `0` will display the first item in the `MediaPreview` array.
 
-## `cropConfig`
+## `previewConfig`
 
 ### [`language`](/config/#language)
+
+see [`language`](/config/#language)
+
+### `onLongPress`
+
+`onLongPress` is a callback function that is called when a long press is detected on the media item. It is a function that takes an index as an argument and returns void.
+
+```typescript
+onLongPress: (index: number) => void
+```
 
 ## Additional Information
 

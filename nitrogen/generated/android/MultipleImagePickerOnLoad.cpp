@@ -33,6 +33,7 @@ int initialize(JavaVM* vm) {
     margelo::nitro::multipleimagepicker::JFunc_void_double::registerNatives();
     margelo::nitro::multipleimagepicker::JFunc_void_CropResult::registerNatives();
     margelo::nitro::multipleimagepicker::JFunc_void_double::registerNatives();
+    margelo::nitro::multipleimagepicker::JFunc_void_double::registerNatives();
     margelo::nitro::multipleimagepicker::JFunc_void_CameraResult::registerNatives();
     margelo::nitro::multipleimagepicker::JFunc_void_double::registerNatives();
 

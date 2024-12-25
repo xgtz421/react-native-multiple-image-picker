@@ -66,7 +66,11 @@ extension HybridMultipleImagePicker {
             HXPhotoPicker.PhotoBrowser.show(
                 assets,
                 pageIndex: Int(index),
-                config: previewConfig
+                config: previewConfig,
+                longPressHandler: { index, _, _ in
+                    print("index ne: ", index)
+                    config.onLongPress?(Double(index))
+                }
             )
         }
     }

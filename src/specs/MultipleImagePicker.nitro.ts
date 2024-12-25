@@ -28,7 +28,8 @@ export interface MultipleImagePicker
   openPreview(
     media: MediaPreview[],
     index: number,
-    config: NitroPreviewConfig
+    config: NitroPreviewConfig,
+    onLongPress: (index: number) => void
   ): void
 
   openCamera(

@@ -127,8 +127,8 @@ namespace margelo::nitro::multipleimagepicker {
         std::rethrow_exception(__result.error());
       }
     }
-    inline void openPreview(const std::vector<MediaPreview>& media, double index, const NitroPreviewConfig& config) override {
-      auto __result = _swiftPart.openPreview(media, std::forward<decltype(index)>(index), config);
+    inline void openPreview(const std::vector<MediaPreview>& media, double index, const NitroPreviewConfig& config, const std::function<void(double /* index */)>& onLongPress) override {
+      auto __result = _swiftPart.openPreview(media, std::forward<decltype(index)>(index), config, onLongPress);
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());
       }

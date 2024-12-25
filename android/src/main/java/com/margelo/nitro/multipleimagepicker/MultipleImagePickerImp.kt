@@ -20,6 +20,7 @@ import com.luck.picture.lib.config.SelectModeConfig
 import com.luck.picture.lib.engine.PictureSelectorEngine
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.interfaces.OnCustomLoadingListener
+import com.luck.picture.lib.interfaces.OnExternalPreviewEventListener
 import com.luck.picture.lib.interfaces.OnMediaEditInterceptListener
 import com.luck.picture.lib.interfaces.OnResultCallbackListener
 import com.luck.picture.lib.language.LanguageConfig
@@ -264,7 +265,12 @@ class MultipleImagePickerImp(reactContext: ReactApplicationContext?) :
     }
 
     @ReactMethod
-    fun openPreview(media: Array<MediaPreview>, index: Int, config: NitroPreviewConfig) {
+    fun openPreview(
+        media: Array<MediaPreview>,
+        index: Int,
+        config: NitroPreviewConfig,
+        onLongPress: (index: Double) -> Unit
+    ) {
         val imageEngine = GlideEngine.createGlideEngine()
 
         val assets: ArrayList<LocalMedia> = arrayListOf()
@@ -279,7 +285,8 @@ class MultipleImagePickerImp(reactContext: ReactApplicationContext?) :
         titleBarStyle.previewTitleBackgroundColor = Color.BLACK
         previewStyle.titleBarStyle = titleBarStyle
 
-        media.forEach { mediaItem ->
+        media.withIndex().forEach { (index, mediaItem) ->
+
             var asset: LocalMedia? = null
 
             mediaItem.path?.let { path ->
@@ -297,7 +304,10 @@ class MultipleImagePickerImp(reactContext: ReactApplicationContext?) :
                 }
             }
 
-            asset?.let { assets.add(it) }
+            asset?.let {
+                it.setPosition(index)
+                assets.add(it)
+            }
         }
 
         PictureSelector
@@ -311,8 +321,19 @@ class MultipleImagePickerImp(reactContext: ReactApplicationContext?) :
             .setVideoPlayerEngine(ExoPlayerEngine())
             .isVideoPauseResumePlay(true)
             .setCustomLoadingListener(getCustomLoadingListener())
-            .startActivityPreview(index, false, assets)
+            .setExternalPreviewEventListener(object : OnExternalPreviewEventListener {
+                override fun onPreviewDelete(position: Int) {
+                    //
+                }
+
+                override fun onLongPressDownload(context: Context, media: LocalMedia): Boolean {
+                    onLongPress(media.position.toDouble())
+                    return true
+                }
+            })
+            .startFragmentPreview(index, false, assets)
     }
+
 
     private fun getCustomLoadingListener(): OnCustomLoadingListener {
         return OnCustomLoadingListener { context -> LoadingDialog(context) }

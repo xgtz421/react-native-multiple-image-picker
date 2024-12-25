@@ -18,17 +18,17 @@ namespace margelo::nitro::multipleimagepicker {
 
   /**
    * C++ representation of the callback Func_void_double.
-   * This is a Kotlin `(reject: Double) -> Unit`, backed by a `std::function<...>`.
+   * This is a Kotlin `(index: Double) -> Unit`, backed by a `std::function<...>`.
    */
   struct JFunc_void_double final: public jni::HybridClass<JFunc_void_double> {
   public:
-    static jni::local_ref<JFunc_void_double::javaobject> fromCpp(const std::function<void(double /* reject */)>& func) {
+    static jni::local_ref<JFunc_void_double::javaobject> fromCpp(const std::function<void(double /* index */)>& func) {
       return JFunc_void_double::newObjectCxxArgs(func);
     }
 
   public:
-    void call(double reject) {
-      _func(reject);
+    void call(double index) {
+      _func(index);
     }
 
   public:
@@ -38,11 +38,11 @@ namespace margelo::nitro::multipleimagepicker {
     }
 
   private:
-    explicit JFunc_void_double(const std::function<void(double /* reject */)>& func): _func(func) { }
+    explicit JFunc_void_double(const std::function<void(double /* index */)>& func): _func(func) { }
 
   private:
     friend HybridBase;
-    std::function<void(double /* reject */)> _func;
+    std::function<void(double /* index */)> _func;
   };
 
 } // namespace margelo::nitro::multipleimagepicker
