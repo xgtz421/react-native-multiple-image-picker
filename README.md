@@ -43,12 +43,12 @@ View Nitro Modules' requirements [here](https://nitro.margelo.com/docs/minimum-r
 
 ## Installation
 
-See more [**Installation**](https://baronha.github.io/react-native-multiple-image-picker/getting-started)
+See more [**Installation**](https://nitrogenzlab.github.io/react-native-multiple-image-picker/getting-started)
 
 ## Usage
 
 Here is a simple usage of the Multiple Image Picker. <br/>
-See more [**Config**](https://baronha.github.io/react-native-multiple-image-picker/config)
+See more [**Config**](https://nitrogenzlab.github.io/react-native-multiple-image-picker/config)
 
 ```typescript
 import { openPicker, Config } from '@baronha/react-native-multiple-image-picker'
@@ -125,7 +125,7 @@ List of used applications with `@baronha/react-native-multiple-image-picker`
 
 Contributions are welcome! If you have an application that uses `@baronha/react-native-multiple-image-picker`, please open a [pull request](/docs/docs/SHOWCASE/showcase.json) to add it to the list.
 
-See all [**Showcase**](https://baronha.github.io/react-native-multiple-image-picker/showcase)
+See all [**Showcase**](https://nitrogenzlab.github.io/react-native-multiple-image-picker/showcase)
 
 ## Performance
 
