@@ -46,14 +46,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/baronha/react-native-multiple-image-picker.git"
+    "url": "git+https://github.com/NitrogenZLab/react-native-multiple-image-picker.git"
   },
   "author": "Bảo Hà. <baronn.ha@gmail.com> (https://github.com/baronha)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/baronha/react-native-multiple-image-picker/issues"
+    "url": "https://github.com/NitrogenZLab/react-native-multiple-image-picker/issues"
   },
-  "homepage": "https://github.com/baronha/react-native-multiple-image-picker#readme",
+  "homepage": "https://github.com/NitrogenZLab/react-native-multiple-image-picker#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

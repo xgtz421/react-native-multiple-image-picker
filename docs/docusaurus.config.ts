@@ -51,7 +51,7 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           routeBasePath: '/',
           editUrl:
-            'https://github.com/baronha/react-native-multiple-image-picker/tree/master/docs',
+            'https://github.com/NitrogenZLab/react-native-multiple-image-picker/tree/main/docs/docs',
           lastVersion: 'current',
           versions: {
             current: {
@@ -90,7 +90,7 @@ const config: Config = {
           label: 'Guides',
         },
         {
-          href: 'https://github.com/baronha/react-native-multiple-image-picker/tree/main/example',
+          href: 'https://github.com/NitrogenZLab/react-native-multiple-image-picker/tree/main/example',
           label: 'Example',
           position: 'left',
         },
@@ -100,7 +100,7 @@ const config: Config = {
           position: 'left',
         },
         {
-          href: 'https://github.com/baronha/react-native-multiple-image-picker',
+          href: 'https://github.com/NitrogenZLab/react-native-multiple-image-picker',
           label: 'GitHub',
           position: 'right',
         },

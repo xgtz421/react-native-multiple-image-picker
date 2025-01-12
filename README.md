@@ -129,8 +129,8 @@ See all [**Showcase**](https://nitrogenzlab.github.io/react-native-multiple-imag
 
 ## Performance
 
-We're trying to improve performance. If you have a better solution, please open a [issue](https://github.com/baronha/react-native-multiple-image-picker/issues)
-or [pull request](https://github.com/baronha/react-native-multiple-image-picker/pulls). Best regards!
+We're trying to improve performance. If you have a better solution, please open a [issue](https://github.com/NitrogenZLab/react-native-multiple-image-picker/issues)
+or [pull request](https://github.com/NitrogenZLab/react-native-multiple-image-picker/pulls). Best regards!
 
 ## License
 
