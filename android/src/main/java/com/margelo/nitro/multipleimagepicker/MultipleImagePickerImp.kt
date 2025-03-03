@@ -39,7 +39,15 @@ import com.yalantis.ucrop.model.AspectRatio
 import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
-
+import android.provider.MediaStore
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.Date
+import java.util.UUID
+import java.io.IOException
+import android.os.Environment
+import android.graphics.BitmapFactory
+import androidx.core.content.FileProvider
 
 class MultipleImagePickerImp(reactContext: ReactApplicationContext?) :
     ReactContextBaseJavaModule(reactContext), IApp {
@@ -50,13 +58,14 @@ class MultipleImagePickerImp(reactContext: ReactApplicationContext?) :
 
     companion object {
         const val TAG = "MultipleImagePicker"
+        const val REQUEST_IMAGE_CAPTURE = 1 // Add this line
     }
 
     private var style = PictureSelectorStyle()
     private lateinit var config: NitroConfig
     private var cropOption = Options()
     private var dataList = mutableListOf<LocalMedia>()
-
+    private var currentPhotoPath: String? = null // Add this line
 
     @ReactMethod
     fun openPicker(
@@ -345,45 +354,81 @@ class MultipleImagePickerImp(reactContext: ReactApplicationContext?) :
         resolved: (result: CameraResult) -> Unit,
         rejected: (reject: Double) -> Unit
     ) {
-        val activity = currentActivity
-        val chooseMode = getChooseMode(config.mediaType)
+        val activity = currentActivity ?: run {
+            rejected(0.0)
+            return
+        }
 
-        PictureSelector
-            .create(activity)
-            .openCamera(chooseMode)
-            .setLanguage(getLanguage(config.language))
-            .setCameraInterceptListener(CameraEngine(appContext, config))
-            .isQuickCapture(true)
-            .isOriginalControl(true)
-            .setVideoThumbnailListener(VideoThumbnailEngine(getVideoThumbnailDir()))
-            .apply {
-                if (config.crop != null) {
-                    setCropEngine(CropEngine(cropOption))
-                }
+        // 创建一个用于启动相机的 Intent
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(activity.packageManager) != null) {
+            // 尝试创建一个临时文件用于存储拍摄的照片
+            val photoFile: File? = try {
+                createImageFile()
+            } catch (ex: IOException) {
+                // 如果创建文件失败，调用 rejected 回调并返回
+                rejected(0.0)
+                null
             }
-            .forResultActivity(object : OnResultCallbackListener<LocalMedia?> {
-                override fun onResult(results: java.util.ArrayList<LocalMedia?>?) {
-                    results?.first()?.let {
-                        val result = getResult(it)
 
-                        resolved(
-                            CameraResult(
-                                path = result.path,
-                                type = result.type,
-                                width = result.width,
-                                height = result.height,
-                                duration = result.duration,
-                                thumbnail = result.thumbnail,
-                                fileName = result.fileName
+            photoFile?.also {
+                // 获取文件的 URI
+                val photoURI: Uri = FileProvider.getUriForFile(
+                    activity,
+                    "${activity.packageName}.fileprovider",
+                    it
+                )
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                // 添加一个 Activity 事件监听器，用于处理拍照结果
+                reactApplicationContext.addActivityEventListener(object : BaseActivityEventListener() {
+                    override fun onActivityResult(activity: Activity, requestCode: Int, resultCode: Int, data: Intent?) {
+                        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+                            // 获取拍摄的照片的宽度和高度
+                            val options = BitmapFactory.Options().apply {
+                                inJustDecodeBounds = true
+                            }
+                            BitmapFactory.decodeFile(photoFile.absolutePath, options)
+                            val width = options.outWidth.toDouble()
+                            val height = options.outHeight.toDouble()
+
+                            // 创建一个 CameraResult 对象，并调用 resolved 回调
+                            val result = CameraResult(
+                                path = photoURI.toString(),
+                                type = ResultType.IMAGE,
+                                width = width, 
+                                height = height,
+                                duration = 0.0,
+                                thumbnail = null,
+                                fileName = photoFile.name
                             )
-                        )
+                            resolved(result)
+                        } else {
+                            rejected(0.0)
+                        }
+                        // 移除事件监听器
+                        reactApplicationContext.removeActivityEventListener(this)
                     }
-                }
+                })
+                // 启动相机应用，并请求拍照
+                activity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            }
+        } else {
+            rejected(0.0)
+        }
+    }
 
-                override fun onCancel() {
-//                    rejected(0.0)
-                }
-            })
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        val imageFileName = "image-" + UUID.randomUUID().toString()
+        val storageDir: File? = reactApplicationContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            imageFileName,
+            ".jpg",
+            storageDir
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
     }
 
     private fun getChooseMode(mediaType: MediaType): Int {
